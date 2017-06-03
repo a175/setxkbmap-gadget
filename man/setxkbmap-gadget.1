@@ -1,0 +1,79 @@
+.TH setxkbmap-gadget 1 
+
+.SH NAME
+ setxkbmap-gadget \- a gui program to change keybord layout
+
+.SH SYNOPSIS
+.\" usage
+.B  setxkbmap-gadget 
+[-layout 
+.I label 
+.I opt
+[-layout 
+.I label 
+.I opt
+] ...]
+[-option 
+.I label 
+.I opt
+[-option 
+.I label 
+.I opt
+] ...]
+[-width
+.I width
+]
+[-height
+.I height
+]
+[-window-title
+.I title
+]
+
+
+.SH DESCRIPTION
+.I setxkbmap-gadget  
+is a small gui program to change keyboard layout.
+
+.SH OPTIONS
+Here is a summary of all the options.  
+
+.TP
+.BI -layout label opt
+Add a new button 
+whose label is 
+.I label. 
+If you click it, then setxkbmap-gadget runs the following:
+
+setxkbmap
+.I opt
+
+.TP
+.BI -option label opt
+Add a new button 
+whose label is 
+.I label. 
+If you click it, then setxkbmap-gadget runs the following:
+
+setxkbmap
+.I opt
+
+
+.TP
+.BI -width width
+The width of window may be 
+.I width.
+
+.TP
+.BI -height height
+The height of window may be 
+.I height.
+
+.TP
+.BI -window-title title
+The tiele of window may be 
+.I tiele.
+
+
+.SH AUTHORS
+NUMATA, Yacehide (nu+y at math sci hokudai ac jp)
