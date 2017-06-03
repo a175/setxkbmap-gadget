@@ -1,2 +1,2 @@
 # setxkbmap-gadget
-Use the command setxkbmap with GUI.
+Use the command 'setxkbmap' with GUI.
