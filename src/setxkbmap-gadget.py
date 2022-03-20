@@ -44,7 +44,7 @@ class SetxkbmapButtonArea:
         hbox = Gtk.HBox()
         frame=Gtk.Frame()
         frame.set_label("Layout and Model")
-        vbbox = Gtk.ButtonBox(orientation=Gtk.Orientation.VERTICAL)
+        vbbox = Gtk.ButtonBox(orientation=Gtk.Orientation.VERTICAL,spacing=4)
         vbbox.set_layout(Gtk.ButtonBoxStyle.START)
         for (label, arg) in self.config.layout:
             if label:
@@ -58,7 +58,7 @@ class SetxkbmapButtonArea:
         
         frame=Gtk.Frame()
         frame.set_label("Option")
-        vbbox = Gtk.ButtonBox(orientation=Gtk.Orientation.VERTICAL)
+        vbbox = Gtk.ButtonBox(orientation=Gtk.Orientation.VERTICAL,spacing=4)
         vbbox.set_layout(Gtk.ButtonBoxStyle.START)
         for (label, arg) in self.config.option:
             if label:
@@ -66,7 +66,9 @@ class SetxkbmapButtonArea:
                 button.connect('clicked', self.on_click_option_button,arg)
                 vbbox.add(button)
             else:
-                vbbox.add(Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL))
+                sep=Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL)
+                vbbox.add(sep)
+                vbbox.set_child_non_homogeneous(sep,True)
 
         frame.add(vbbox)
         hbox.add(frame)
