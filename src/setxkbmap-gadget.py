@@ -1,7 +1,11 @@
-#!/usr/bin/env python
-import pygtk,gtk
-pygtk.require('2.0')
-import os,sys
+#!/usr/bin/env python3
+import gi
+gi.require_version('Gtk', '3.0')
+from gi.repository import Gtk
+
+
+import os
+import sys
 
 class SetxkbmapButtonConfigData:
     def __init__(self):
@@ -38,32 +42,33 @@ class SetxkbmapButtonArea:
             self.config=config
         else:
             self.config=SetxkbmapButtonConfigData()
-        hbox = gtk.HBox()
-        frame=gtk.Frame()
+        hbox = Gtk.HBox()
+        frame=Gtk.Frame()
         frame.set_label("Layout and Model")
-        vbbox = gtk.VButtonBox()
-        vbbox.set_layout(gtk.BUTTONBOX_START)
+        vbbox = Gtk.VButtonBox()
+        vbbox.set_layout(Gtk.ButtonBoxStyle.START)
         for (label, arg) in self.config.layout:
             if label:
-                button = gtk.Button(label=label)
+                button = Gtk.Button(label=label)
                 button.connect('clicked', self.on_click_option_button,arg)
                 vbbox.add(button)
             else:
-                vbbox.add(gtk.HSeparator())
+                vbbox.add(Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL))
         frame.add(vbbox)
         hbox.add(frame)
         
-        frame=gtk.Frame()
+        frame=Gtk.Frame()
         frame.set_label("Option")
-        vbbox = gtk.VButtonBox()
-        vbbox.set_layout(gtk.BUTTONBOX_START)
+        vbbox = Gtk.VButtonBox()
+        vbbox.set_layout(Gtk.ButtonBoxStyle.START)
         for (label, arg) in self.config.option:
             if label:
-                button = gtk.Button(label=label)
+                button = Gtk.Button(label=label)
                 button.connect('clicked', self.on_click_option_button,arg)
                 vbbox.add(button)
             else:
-                vbbox.add(gtk.HSeparator())
+                vbbox.add(Gtk.Separator(orientation=Gtk.Orientation.HORIZONTAL))
+
         frame.add(vbbox)
         hbox.add(frame)
         hbox.show_all()
@@ -76,22 +81,38 @@ class SetxkbmapButtonArea:
         self.exec_setxkbmap(arg)
     def exec_setxkbmap(self,arg):
         command="setxkbmap "+arg
-        print command
+        print(command)
         os.system(command)
 
-class SetxkbmapButtonMain:
-    def __init__(self,title,width,height,config):
+
+class SetxkbmapGadgetWindow(Gtk.ApplicationWindow):
+    def __init__(self,app,title,width,height,config):
+        super().__init__(application=app, title=title)
         if width <0:
             width = -width
         if height <= 0:
             height=width
-        self.window = gtk.Window(gtk.WINDOW_TOPLEVEL)
-        self.window.set_default_size(width,height)
-        self.window.set_title(title)
-        self.window.connect("destroy", lambda w: gtk.main_quit())
+        self.set_default_size(width,height)
         area = SetxkbmapButtonArea(config)
-        self.window.add(area.get_hbox())
-        self.window.show()
+        self.add(area.get_hbox())
+        self.show()
+
+class SetxkbmapGadget(Gtk.Application):
+    def __init__(self,window_title,window_width,window_height,config):
+        Gtk.Application.__init__(self)
+        self.window = None
+        self.window_title=window_title
+        self.window_width=window_width
+        self.window_height=window_height
+        self.config=config
+
+    def do_startup(self):
+        Gtk.Application.do_startup(self)        
+ 
+    def do_activate(self):
+        if not self.window:
+            self.window = SetxkbmapGadgetWindow(self,self.window_title,self.window_width,self.window_height,self.config)
+        self.props.active_window.present()
 
 def main():
     window_width=10
@@ -115,8 +136,11 @@ def main():
             label=argv.pop(0)
             command=argv.pop(0)
             config.add_option(label,command,0)
-    SetxkbmapButtonMain(window_title,window_width,window_height,config)
-    gtk.main()
+    #SetxkbmapButtonMain(window_title,window_width,window_height,config)
+    #gtk.main()
+    app = SetxkbmapGadget(window_title,window_width,window_height,config)
+    app.run(sys.argv)
+
 
 if __name__ == "__main__":
     main()
