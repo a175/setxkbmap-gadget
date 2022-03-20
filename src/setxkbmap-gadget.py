@@ -12,7 +12,6 @@ class SetxkbmapButtonConfigData:
         self.layout=[]
         self.option=[]
 
-
         self.add_layout("JP","-model jp106 -layout jp")
         self.add_layout("US","-model pc -layout us")
         self.add_layout("DE","-model pc -layout de")
@@ -45,7 +44,7 @@ class SetxkbmapButtonArea:
         hbox = Gtk.HBox()
         frame=Gtk.Frame()
         frame.set_label("Layout and Model")
-        vbbox = Gtk.VButtonBox()
+        vbbox = Gtk.ButtonBox(Gtk.Orientation.HORIZONTAL)
         vbbox.set_layout(Gtk.ButtonBoxStyle.START)
         for (label, arg) in self.config.layout:
             if label:
@@ -59,7 +58,7 @@ class SetxkbmapButtonArea:
         
         frame=Gtk.Frame()
         frame.set_label("Option")
-        vbbox = Gtk.VButtonBox()
+        vbbox = Gtk.ButtonBox(Gtk.Orientation.HORIZONTAL)
         vbbox.set_layout(Gtk.ButtonBoxStyle.START)
         for (label, arg) in self.config.option:
             if label:
